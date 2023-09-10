@@ -8,6 +8,10 @@ const TenantAdminSchema = new Schema(
       type: String,
       required: true,
     },
+    mobile_number: {
+      type: Number,
+      required: true,
+    },
     address: {
       type: Object,
     },
@@ -19,6 +23,12 @@ const TenantAdminSchema = new Schema(
     },
     settings: {
       type: Object,
+    },
+    otp: {
+      type: Number,
+    },
+    token: {
+      type: String,
     },
   },
   {

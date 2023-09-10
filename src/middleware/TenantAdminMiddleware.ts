@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
 
 import { ErrorResponse } from '../helpers/response';
 
@@ -9,6 +10,7 @@ export const TenantAdminMiddleware = (
 ) => {
   if (req.query.tenantId) {
     const tenantId = req.query.tenantId;
+    mongoose.connection.useDb(`tenant-${tenantId}`);
     if (tenantId === '1') {
       next();
     } else {

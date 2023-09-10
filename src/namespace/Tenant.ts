@@ -10,6 +10,9 @@ export type TenantType = {
     timezone: 'UTC';
     currency: 'INR';
   };
+  token: string;
+  mobile_number: number;
+  otp: number;
 };
 
 export enum SubscriptionPlanType {
