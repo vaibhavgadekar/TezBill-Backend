@@ -46,6 +46,10 @@ export type SubscriptionType = {
   end_date: string;
 };
 
+export type JWTResponse = {
+  userId: number;
+};
+
 export enum TenantStatus {
   Active = 'Active',
   WaitingForPayment = 'Waiting for Payment',

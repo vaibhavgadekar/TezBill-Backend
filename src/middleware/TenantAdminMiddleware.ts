@@ -1,26 +1,30 @@
 import type { NextFunction, Request, Response } from 'express';
-import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
-import { ErrorResponse } from '../helpers/response';
+import { JWTScreatKey } from '../common/Constant';
+import type { JWTResponse } from '../namespace/Tenant';
 
 export const TenantAdminMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  if (req.query.tenantId) {
-    const tenantId = req.query.tenantId;
-    mongoose.connection.useDb(`tenant-${tenantId}`);
-    if (tenantId === '1') {
-      next();
-    } else {
-      throw new ErrorResponse(res, {
-        message: 'You are not authorized to perform this operation !',
-      });
-    }
-  } else {
-    throw new ErrorResponse(res, {
-      message: 'Tenant Id not found',
+  const token =
+    req.body.token || req.query.token || req.headers['x-access-token'];
+  if (!token) {
+    return res.status(403).send({
+      status: 'failed',
+      message: 'A token is required for authentication',
     });
   }
+  try {
+    const { userId } = jwt.verify(token, JWTScreatKey) as JWTResponse;
+    req.body.id = userId;
+  } catch (err) {
+    return res.status(401).send({
+      status: 'failed',
+      message: 'Invalid Token',
+    });
+  }
+  return next();
 };

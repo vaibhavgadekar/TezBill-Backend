@@ -1,5 +1,7 @@
 import type { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
+import { JWTScreatKey } from '../common/Constant';
 import { ErrorResponse, SuccessResponse } from '../helpers/response';
 import TenantAdmin from '../model/TenantAdmin';
 import { generateOTP } from '../utils/common';
@@ -73,10 +75,15 @@ const sendOTP = (req: Request, res: Response) => {
 const verifyOTP = (req: Request, res: Response) => {
   try {
     const { mobile_number, otp } = req.body;
-
     return TenantAdmin.find({ mobile_number, otp }).then(tenantData => {
       if (tenantData.length > 0) {
-        return new SuccessResponse(res, { isSuccess: true });
+        const userData = {
+          time: Date(),
+          userId: tenantData[0]?.id,
+        };
+        const token = jwt.sign(userData, JWTScreatKey);
+
+        return new SuccessResponse(res, { isSuccess: true, token: token });
       } else {
         return new SuccessResponse(res, { isSuccess: false });
       }
