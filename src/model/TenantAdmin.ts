@@ -27,6 +27,10 @@ const TenantAdminSchema = new Schema(
     otp: {
       type: Number,
     },
+    role: {
+      type: String,
+      default: 'L1',
+    },
     token: {
       type: String,
     },

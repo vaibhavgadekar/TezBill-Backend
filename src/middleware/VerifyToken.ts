@@ -4,11 +4,7 @@ import jwt from 'jsonwebtoken';
 import { JWTScreatKey } from '../common/Constant';
 import type { JWTResponse } from '../namespace/Tenant';
 
-export const TenantAdminMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const Verify = (req: Request, res: Response, next: NextFunction) => {
   const token =
     req.body.token || req.query.token || req.headers['x-access-token'];
   if (!token) {
@@ -19,7 +15,7 @@ export const TenantAdminMiddleware = (
   }
   try {
     const { userId } = jwt.verify(token, JWTScreatKey) as JWTResponse;
-    req.body.id = userId;
+    req.params.userId = userId;
   } catch (err) {
     return res.status(401).send({
       status: 'failed',

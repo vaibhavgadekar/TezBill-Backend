@@ -47,7 +47,7 @@ export type SubscriptionType = {
 };
 
 export type JWTResponse = {
-  userId: number;
+  userId: string;
 };
 
 export enum TenantStatus {
