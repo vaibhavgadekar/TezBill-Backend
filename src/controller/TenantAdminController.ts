@@ -14,7 +14,6 @@ const createNewTenant = (req: Request, res: Response) => {
         if (tenantData.length > 0) {
           return new ErrorResponse(res, {
             message: 'User already exist !',
-            otp: generateOTP,
           });
         } else {
           const tenant = new TenantAdmin(req.body);
