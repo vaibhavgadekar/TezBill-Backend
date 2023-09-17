@@ -5,6 +5,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import CategoryRoute from './src/routes/CategoryRoute';
+import FloorRoute from './src/routes/FloorRoute';
 import TenatAdminRoute from './src/routes/TenatAdminRoute';
 const app = express();
 
@@ -65,6 +66,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/tenatadmin', TenatAdminRoute);
 app.use('/category', CategoryRoute);
+app.use('/floor', FloorRoute);
 
 app.get('/ping', (res: express.Response) => {
   return res.json({ message: 'HealthCheck' });
