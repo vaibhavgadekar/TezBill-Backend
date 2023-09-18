@@ -9,6 +9,8 @@ export namespace Products {
     image: string;
     price: number;
     stock: number;
+    variants?: Item[];
+    addons?: Item[];
     TenantID: string;
     availability: Status;
   }
@@ -22,5 +24,10 @@ export namespace Products {
   export enum Status {
     ACTIVE = 'ACTIVE',
     DEACTIVE = 'DEACTIVE',
+  }
+
+  export interface Item {
+    name: string;
+    price: number;
   }
 }

@@ -31,6 +31,12 @@ const ProductSchema = new Schema<Products.Menu>(
       type: [],
       required: true,
     },
+    variants: {
+      type: [],
+    },
+    addons: {
+      type: [],
+    },
   },
   {
     timestamps: true,
