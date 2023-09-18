@@ -29,9 +29,11 @@ const createCategory = (req: Request, res: Response) => {
 const getAllCategory = (req: Request, res: Response) => {
   try {
     const TenantID = req.params.userId;
-    return Category.find({ TenantID }).then(categories => {
-      return new SuccessResponse(res, { categories });
-    });
+    return Category.find({ TenantID })
+      .sort({ updatedAt: -1 })
+      .then(categories => {
+        return new SuccessResponse(res, { categories });
+      });
   } catch (error) {
     return new ErrorResponse(res, error);
   }

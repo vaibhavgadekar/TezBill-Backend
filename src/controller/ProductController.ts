@@ -2,17 +2,17 @@ import type { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
 import { ErrorResponse, SuccessResponse } from '../helpers/response';
-import Floor from '../model/Floor';
+import Product from '../model/Product';
 
-const createFloor = (req: Request, res: Response) => {
+const createProduct = (req: Request, res: Response) => {
   try {
     const reqBody = {
       ...req.body,
       TenantID: req.params.userId,
     };
 
-    const floor = new Floor(reqBody);
-    return floor
+    const product = new Product(reqBody);
+    return product
       .save()
       .then(data => {
         return new SuccessResponse(res, data);
@@ -25,58 +25,58 @@ const createFloor = (req: Request, res: Response) => {
   }
 };
 
-const getAllFloors = (req: Request, res: Response) => {
+const getAllProducts = (req: Request, res: Response) => {
   try {
     const TenantID = req.params.userId;
-    return Floor.find({ TenantID })
+    return Product.find({ TenantID })
       .sort({ updatedAt: -1 })
-      .then(floors => {
-        return new SuccessResponse(res, { floors });
+      .then(products => {
+        return new SuccessResponse(res, { products });
       });
   } catch (error) {
     return new ErrorResponse(res, error);
   }
 };
 
-const updateFloor = (req: Request, res: Response) => {
+const updateProduct = (req: Request, res: Response) => {
   try {
     const { id, userId } = req.params;
 
     const isValidId = mongoose.Types.ObjectId.isValid(id);
     if (!isValidId) {
       return new ErrorResponse(res, {
-        message: 'Invalid Floor',
+        message: 'Invalid Product',
       });
     }
 
-    return Floor.findOneAndUpdate({ _id: id, TenantID: userId }, req.body, {
+    return Product.findOneAndUpdate({ _id: id, TenantID: userId }, req.body, {
       new: true,
-    }).then(floorData => {
-      return new SuccessResponse(res, { floorData });
+    }).then(products => {
+      return new SuccessResponse(res, { products });
     });
   } catch (error) {
     return new ErrorResponse(res, error);
   }
 };
 
-const deleteFloor = (req: Request, res: Response) => {
+const deleteProduct = (req: Request, res: Response) => {
   try {
     const { id, userId } = req.params;
 
     const isValidId = mongoose.Types.ObjectId.isValid(id);
     if (!isValidId) {
       return new ErrorResponse(res, {
-        message: 'Invalid Floor',
+        message: 'Invalid Product',
       });
     }
 
-    return Floor.findOneAndDelete(
+    return Product.findOneAndDelete(
       { _id: id, TenantID: userId },
       {
         new: true,
       },
-    ).then(floorData => {
-      return new SuccessResponse(res, { floorData });
+    ).then(products => {
+      return new SuccessResponse(res, { products });
     });
   } catch (error) {
     return new ErrorResponse(res, error);
@@ -84,8 +84,8 @@ const deleteFloor = (req: Request, res: Response) => {
 };
 
 export default {
-  createFloor,
-  getAllFloors,
-  deleteFloor,
-  updateFloor,
+  createProduct,
+  getAllProducts,
+  deleteProduct,
+  updateProduct,
 };

@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import CategoryRoute from './src/routes/CategoryRoute';
 import FloorRoute from './src/routes/FloorRoute';
+import ProductRoute from './src/routes/ProductRoute';
 import StaffRoute from './src/routes/StaffRoute';
 import TableRoute from './src/routes/TableRoute';
 import TenatAdminRoute from './src/routes/TenatAdminRoute';
@@ -71,6 +72,7 @@ app.use('/category', CategoryRoute);
 app.use('/floor', FloorRoute);
 app.use('/staff', StaffRoute);
 app.use('/table', TableRoute);
+app.use('/product', ProductRoute);
 
 app.get('/ping', (res: express.Response) => {
   return res.json({ message: 'HealthCheck' });

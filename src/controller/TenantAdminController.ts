@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { JWTScreatKey } from '../common/Constant';
+import sendOtpToMobile from '../common/SendOTP';
 import { ErrorResponse, SuccessResponse } from '../helpers/response';
 import TenantAdmin from '../model/TenantAdmin';
 import { generateOTP } from '../utils/common';
@@ -57,14 +58,18 @@ const sendOTP = (req: Request, res: Response) => {
     const { mobile_number } = req.body;
     const otp = generateOTP();
 
-    ///send OTP TO specified mobile number
-
     return TenantAdmin.findOneAndUpdate(
       { mobile_number },
       { otp },
       { new: true },
     ).then(tenantData => {
-      return new SuccessResponse(res, { tenantData });
+      sendOtpToMobile(mobile_number, otp)
+        .then(() => {
+          return new SuccessResponse(res, { tenantData });
+        })
+        .catch(() => {
+          return new ErrorResponse(res, { message: 'Could not send the OTP' });
+        });
     });
   } catch (error) {
     return new ErrorResponse(res, error);

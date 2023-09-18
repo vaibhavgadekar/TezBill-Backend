@@ -28,9 +28,11 @@ const createStaff = (req: Request, res: Response) => {
 const getAllStaff = (req: Request, res: Response) => {
   try {
     const TenantID = req.params.userId;
-    return Staff.find({ TenantID }).then(staff => {
-      return new SuccessResponse(res, { staff });
-    });
+    return Staff.find({ TenantID })
+      .sort({ updatedAt: -1 })
+      .then(staff => {
+        return new SuccessResponse(res, { staff });
+      });
   } catch (error) {
     return new ErrorResponse(res, error);
   }

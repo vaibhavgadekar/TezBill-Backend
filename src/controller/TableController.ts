@@ -28,9 +28,11 @@ const createTable = (req: Request, res: Response) => {
 const getAllTable = (req: Request, res: Response) => {
   try {
     const TenantID = req.params.userId;
-    return Table.find({ TenantID }).then(tables => {
-      return new SuccessResponse(res, { tables });
-    });
+    return Table.find({ TenantID })
+      .sort({ updatedAt: -1 })
+      .then(tables => {
+        return new SuccessResponse(res, { tables });
+      });
   } catch (error) {
     return new ErrorResponse(res, error);
   }
